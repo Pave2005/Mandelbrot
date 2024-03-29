@@ -6,10 +6,17 @@
 
 int main ()
 {
+    #ifndef TEST
     RenderWindow window (VideoMode (width, height), "Mandelbrot Set");
 
+    #endif
+
     Image image;
-    image.create (width, height, Color::Black);
+    float scale = 3;
+    float users_shift = 0;
+
+    #ifndef TEST
+    image.create (width, height, Color::White);
 
     Texture texture;
     texture.create (width, height);
@@ -22,15 +29,28 @@ int main ()
         {
             if (event.type == Event::Closed)
                 window.close ();
+
+            if (event.type == Event::KeyPressed)
+            {
+                if (event.key.code == Keyboard::Up) scale += 1;
+
+                else if (event.key.code == Keyboard::Down) scale -= 1;
+
+                else if (event.key.code == Keyboard::Right) users_shift += 50;
+
+                else if (event.key.code == Keyboard::Left) users_shift -= 50;
+            }
         }
+    #endif
 
-        DrawMaldelbrotSmpVers (image);
+        DrawMaldelbrotSmpVers (&image, scale, users_shift);
 
+    #ifndef TEST
         texture.update (image);
-
         window.clear ();
         window.draw (sprite);
         window.display ();
     }
+    #endif
 }
 
