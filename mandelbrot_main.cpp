@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
 #include <xmmintrin.h>
+#include <stdlib.h>
 
 #include "Mandelbrot.h"
 
@@ -8,7 +9,6 @@ int main ()
 {
     #ifndef TEST
     RenderWindow window (VideoMode (width, height), "Mandelbrot Set");
-
     #endif
 
     Image image;
@@ -43,12 +43,27 @@ int main ()
         }
     #endif
 
-        DrawMaldelbrotSmpVers (&image, scale, users_shift);
+        clock_t start = clock ();
+        DrawMaldelbrotMidVers (&image, scale, users_shift);
+        clock_t finish = clock ();
+
+        int fps_num = FpsCounter (start, finish);
+
+        char fps_str[10] = {};
+        sprintf (fps_str, "%d", fps_num);
 
     #ifndef TEST
+        Font font;
+        font.loadFromFile("times.ttf");
+        Text text("", font, 20);
+
+        text.setString(fps_str);
+		text.setPosition(0, 0);
+
         texture.update (image);
         window.clear ();
         window.draw (sprite);
+        window.draw(text);
         window.display ();
     }
     #endif

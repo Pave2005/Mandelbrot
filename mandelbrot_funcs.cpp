@@ -6,13 +6,15 @@
 #include "Mandelbrot.h"
 
 #ifdef TEST
-void CountFPS (unsigned long long start, unsigned long long finish)
-{
-    unsigned long long dif = finish - start;
-    int fps_value = (int)(1 / dif);
-    printf ("%d", fps_value);
-}
+
 #endif
+
+int FpsCounter (clock_t start, clock_t finish)
+{
+    float time  = (float)(finish - start) / CLOCKS_PER_SEC;
+    int fps = (int)(1 / time);
+    return fps;
+}
 
 int GetPixelColorSmpVers (float x_start, float y_start)
 {
@@ -109,20 +111,16 @@ void GetPixelColorFastVers (__m128 x_start_vector, __m128 y_start_vector, __m128
 
 void DrawMaldelbrotSmpVers (Image* image, float scale, float users_shift)
 {
-    float x_start = - ((width - 1) / 2) - x_shift + users_shift;
-    float y_start =    (height - 1) / 2;
+    float x_start = -(width / 2) - x_shift + users_shift;
+    float y_start = height / 2;
     float x_trans = dx * scale;
     float y_trans = dy * scale;
 
-    #ifdef TEST
-    unsigned long long start = __rdtsc();
-    #endif
-
-    for (int y_pixel_counter = 0; y_pixel_counter <= height; y_pixel_counter++)
+    for (int y_pixel_counter = 0; y_pixel_counter < height; y_pixel_counter++)
     {
         float y = (y_start - y_pixel_counter) * y_trans;
 
-        for (int x_pixel_counter = 0; x_pixel_counter <= width; x_pixel_counter++)
+        for (int x_pixel_counter = 0; x_pixel_counter < width; x_pixel_counter++)
         {
             float x = (x_start + x_pixel_counter) * x_trans;
 
@@ -134,30 +132,21 @@ void DrawMaldelbrotSmpVers (Image* image, float scale, float users_shift)
             #endif
         }
     }
-
-    #ifdef TEST
-    unsigned long long finish = __rdtsc();
-    printf ("1 test:\ntime = %llu\n\n", finish - start);
-    #endif
 }
 
 
 void DrawMaldelbrotMidVers (Image* image, float scale, float users_shift)
 {
-    float x_start = - ((width - 1) / 2) - x_shift + users_shift;
-    float y_start = (height - 1) / 2;
+    float x_start = - (width / 2) - x_shift + users_shift;
+    float y_start = height / 2;
     float x_trans = dx * scale;
     float y_trans = dy * scale;
 
-    #ifdef TEST
-    unsigned long long start = __rdtsc();
-    #endif
-
-    for (int y_pixel_counter = 0; y_pixel_counter <= height; y_pixel_counter++)
+    for (int y_pixel_counter = 0; y_pixel_counter < height; y_pixel_counter++)
     {
         float y = (y_start - y_pixel_counter) * y_trans;
 
-        for (int x_pixel_counter = 0; x_pixel_counter <= width; x_pixel_counter += 4)
+        for (int x_pixel_counter = 0; x_pixel_counter < width; x_pixel_counter += 4)
         {
             float x = (x_start + x_pixel_counter) * x_trans;
 
@@ -178,18 +167,13 @@ void DrawMaldelbrotMidVers (Image* image, float scale, float users_shift)
         }
     }
 
-    #ifdef TEST
-    unsigned long long finish = __rdtsc();
-    printf ("2 test:\ntime = %llu\n\n", finish - start);
-    #endif
-
 }
 
 
 void DrawMaldelbrotFastVers (Image* image, float scale, float users_shift)
 {
-    float x_start = - ((width - 1) / 2) - x_shift + users_shift;
-    float y_start = (height - 1) / 2;
+    float x_start = - (width / 2) - x_shift + users_shift;
+    float y_start = height / 2;
     float x_trans = dx * scale;
     float y_trans = dy * scale;
 
@@ -197,11 +181,11 @@ void DrawMaldelbrotFastVers (Image* image, float scale, float users_shift)
     unsigned long long start = __rdtsc();
     #endif
 
-    for (int y_pixel_counter = 0; y_pixel_counter <= height; y_pixel_counter++)
+    for (int y_pixel_counter = 0; y_pixel_counter < height; y_pixel_counter++)
     {
         float y = (y_start - y_pixel_counter) * y_trans;
 
-        for (int x_pixel_counter = 0; x_pixel_counter <= width; x_pixel_counter += 4)
+        for (int x_pixel_counter = 0; x_pixel_counter < width; x_pixel_counter += 4)
         {
             float x = (x_start + x_pixel_counter) * x_trans;
 
@@ -223,9 +207,4 @@ void DrawMaldelbrotFastVers (Image* image, float scale, float users_shift)
             #endif
         }
     }
-
-    #ifdef TEST
-    unsigned long long finish = __rdtsc();
-    printf ("3 test:\ntime = %llu\n\n", finish - start);
-    #endif
 }

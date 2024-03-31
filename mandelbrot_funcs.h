@@ -1,6 +1,8 @@
 #ifndef MAND
 #define MAND
 
+#include <time.h>
+
 using namespace sf;
 
 // #define TEST
@@ -26,6 +28,6 @@ void DrawMaldelbrotSmpVers (Image* image, float scale, float users_shift);
 void DrawMaldelbrotMidVers (Image* image, float scale, float users_shift);
 void DrawMaldelbrotFastVers (Image* image, float scale, float users_shift);
 
-void CountFPS (unsigned long long start, unsigned long long finish);
+int FpsCounter (clock_t start, clock_t finish);
 
 #endif
