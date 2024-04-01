@@ -41,10 +41,10 @@ int main ()
                 else if (event.key.code == Keyboard::Left) users_shift -= 50;
             }
         }
-    #endif
+        #endif
 
         clock_t start = clock ();
-        DrawMaldelbrotMidVers (&image, scale, users_shift);
+        DrawMaldelbrotFastVers (&image, scale, users_shift);
         clock_t finish = clock ();
 
         int fps_num = FpsCounter (start, finish);
@@ -52,7 +52,7 @@ int main ()
         char fps_str[10] = {};
         sprintf (fps_str, "%d", fps_num);
 
-    #ifndef TEST
+        #ifndef TEST
         Font font;
         font.loadFromFile("times.ttf");
         Text text("", font, 20);

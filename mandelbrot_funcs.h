@@ -5,7 +5,8 @@
 
 using namespace sf;
 
-// #define TEST
+//#define TEST
+#define TIME(start, finish) (float)(finish - start) / CLOCKS_PER_SEC
 
 const int max_pixel_idx = 256;
 const int width         = 1400;
@@ -14,6 +15,7 @@ const float dx          = 1/800.f;
 const float dy          = 1/800.f;
 const float x_shift     = width/10;
 const int radius        = 10;
+const int measure_num   = 100;
 
 const __m128 RADIUS = _mm_set_ps1(10.f);
 
